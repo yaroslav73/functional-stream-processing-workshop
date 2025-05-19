@@ -1,3 +1,4 @@
+import cats.Id
 import fs2.*
 
 /** The following stream outputs no values */
@@ -21,3 +22,10 @@ Stream(1).repeat
   .take(2)
   .compile
   .count
+
+Stream.empty
+  .repeat
+  .take(1)
+  .compile
+  .toList
+//  .count
