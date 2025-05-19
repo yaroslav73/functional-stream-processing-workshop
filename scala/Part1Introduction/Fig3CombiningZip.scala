@@ -2,7 +2,7 @@ import fs2.*
 import cats.effect.*
 import aquascape.*
 
-object Fig3CombiningZip extends WorkshopAquascapeApp {
+object Fig3CombiningZip extends WorkshopAquascapeApp1 {
   def stream(using Scape[IO]) = {
     Stream(1, 2, 3)
       .stage("Stage(1, 2, 3)")

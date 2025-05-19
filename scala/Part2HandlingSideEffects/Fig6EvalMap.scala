@@ -2,7 +2,7 @@ import fs2.*
 import cats.effect.*
 import aquascape.*
 
-object Fig6EvalMap extends WorkshopAquascapeApp {
+object Fig6EvalMap extends WorkshopAquascapeApp1 {
   override def chunked: Boolean = true
 
   def print(x: Int): IO[String] = IO.println(s"Printing $x").as(x.toString)

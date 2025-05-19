@@ -3,7 +3,7 @@ import cats.effect.*
 import aquascape.*
 import scala.concurrent.duration.*
 
-object Fig3ParEvalMapNondeterminism extends WorkshopAquascapeApp {
+object Fig3ParEvalMapNondeterminism extends WorkshopAquascapeApp1 {
 
   def process(time: Int, i: Long): IO[Long] = IO.sleep(time.seconds).as(i)
 

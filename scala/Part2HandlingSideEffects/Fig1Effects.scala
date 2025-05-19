@@ -2,7 +2,7 @@ import fs2.*
 import cats.effect.*
 import aquascape.*
 
-object Fig1Effects extends WorkshopAquascapeApp {
+object Fig1Effects extends WorkshopAquascapeApp1 {
   def print(x: Int): IO[String] = IO.println(s"Printing $x").as(x.toString)
 
   def stream(using Scape[IO]) = {

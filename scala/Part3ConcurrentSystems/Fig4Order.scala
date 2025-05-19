@@ -4,7 +4,7 @@ import cats.Show
 import aquascape.*
 import scala.concurrent.duration.*
 
-object Fig4Order extends WorkshopAquascapeApp {
+object Fig4Order extends WorkshopAquascapeApp1 {
 
   def eval(task: Task): IO[Task] = IO.sleep(task.time.seconds).as(task)
   def sleepFixed(i: Task): IO[Task] = IO.sleep(2.seconds).as(i)

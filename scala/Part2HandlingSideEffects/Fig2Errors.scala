@@ -3,7 +3,7 @@ import cats.effect.*
 import aquascape.*
 import cats.syntax.all.*
 
-object Fig2Errors extends WorkshopAquascapeApp {
+object Fig2Errors extends WorkshopAquascapeApp1 {
   def raiseIfTwo(x: Int): IO[Int] = IO.raiseError(new Error("!")).whenA(x == 2).as(x)
 
   def stream(using Scape[IO]) = {

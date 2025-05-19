@@ -2,7 +2,7 @@ import fs2.*
 import cats.effect.*
 import aquascape.*
 
-object Fig5Chunks extends WorkshopAquascapeApp {
+object Fig5Chunks extends WorkshopAquascapeApp1 {
 
   override def chunked: Boolean = true
 

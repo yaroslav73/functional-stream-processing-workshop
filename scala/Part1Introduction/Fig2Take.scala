@@ -2,7 +2,7 @@ import fs2.*
 import cats.effect.*
 import aquascape.*
 
-object Fig2Take extends WorkshopAquascapeApp {
+object Fig2Take extends WorkshopAquascapeApp1 {
   def stream(using Scape[IO]) = {
     Stream(1, 2, 3)
       .stage("Stream(1,2,3)")
