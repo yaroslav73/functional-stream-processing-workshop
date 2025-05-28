@@ -15,3 +15,11 @@ helloWords
   )
   .compile
   .toList
+
+val stream1 = Stream(1, 2, 3)
+val stream2 = Stream(4, 5, 6, 7, 8, 9)
+
+stream1
+  .zip(stream2)
+  .compile
+  .toList

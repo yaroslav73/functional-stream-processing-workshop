@@ -38,9 +38,8 @@ val (firstSixWordsTime, firstSixWordsOfLittleDorrit) =
 def countWords(book: Stream[IO, String]): Stream[IO, Long] =
   book.map(_ => 1L).foldMonoid
 
-def countWordsInBook(title: String): Stream[IO, Long] = countWords(
-  generateTestBook(title)
-)
+def countWordsInBook(title: String): Stream[IO, Long] =
+  countWords(generateTestBook(title))
 
 def countWordsInBooks(titles: Stream[IO, String]): Stream[IO, Long] =
   fanOutAndIn(titles, title => countWordsInBook(title)).foldMonoid
@@ -85,13 +84,15 @@ def countWordsInRealBooksSequentially(
     .flatMap(title => countWordsInRealBook(title))
     .foldMonoid
 
-val (timeToComputeReal, _) = countWordsInRealBooks(
-  Stream("little-dorrit", "hard-times")
-).compile.last.timed.unsafeRunSync()
+val (timeToComputeReal, _) =
+  countWordsInRealBooks(
+    Stream("little-dorrit", "hard-times")
+  ).compile.last.timed.unsafeRunSync()
 
-val (timeToComputeSequentiallyReal, _) = countWordsInRealBooksSequentially(
-  Stream("little-dorrit", "hard-times")
-).compile.last.timed.unsafeRunSync()
+val (timeToComputeSequentiallyReal, _) =
+  countWordsInRealBooksSequentially(
+    Stream("little-dorrit", "hard-times")
+  ).compile.last.timed.unsafeRunSync()
 
 println(s"Real fan out/in: $timeToComputeReal")
 println(s"Real sequential: $timeToComputeSequentiallyReal")

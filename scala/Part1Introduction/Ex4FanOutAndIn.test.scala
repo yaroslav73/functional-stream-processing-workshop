@@ -29,12 +29,14 @@ class Ex4FanOutAndIn extends CatsEffectSuite {
   // Use the `countWordsInBook` function.
   def countWordsInBooksWithFanOutAndIn(
       titles: Stream[IO, String]
-  ): Stream[IO, Long] = ???
+  ): Stream[IO, Long] =
+    titles.map(countWordsInBook).parJoinUnbounded.foldMonoid
 
   // Use the `countWordsInBook` function.
   def countWordsInBooksSequentially(
       titles: Stream[IO, String]
-  ): Stream[IO, Long] = ???
+  ): Stream[IO, Long] =
+    titles.flatMap(countWordsInBook).foldMonoid
 
   test("fan-out fan-in") {
     val titles = Stream("little-dorrit", "hard-times")
