@@ -1,4 +1,5 @@
 import cats.effect.{IO, IOApp}
+import cats.implicits.catsSyntaxSemigroup
 import fs2.*
 
 object Playground extends IOApp.Simple {
@@ -47,4 +48,12 @@ object Playground extends IOApp.Simple {
     )
 
     // IO.unit
+
+    val greetings1 = IO(IO.println("Hello1!"))
+    val greetings2 = IO(IO.println("Hello2!"))
+    val greetTwiceNotWork = greetings1 *> greetings2
+    val greetTwiceWork = greetings1 |+| greetings2
+
+    greetTwiceNotWork.flatten
+    greetTwiceWork.flatten
 }
