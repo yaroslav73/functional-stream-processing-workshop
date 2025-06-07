@@ -12,15 +12,15 @@ class Ex3Errors extends CatsEffectSuite {
 
   def nap(name: String): IO[String] = IO(s"$name naps.")
 
-  val kittens = Stream("Mao", "Popcorn")
+  val kittens: Stream[Pure, String] = Stream("Mao", "Popcorn")
 
   test("Raise an error") {
-    val result: Stream[IO, Nothing] = ???
+    val result: Stream[IO, Nothing] = Stream.raiseError(Err)
     assertIO(result.compile.drain.attempt, Left(Err))
   }
 
   test("Mao eats, then Popcorn errors.") {
-    val result: Stream[IO, String] = ???
+    val result: Stream[IO, String] = kittens.evalMap(eat)
     assertIO(result.compile.toList.attempt, Left(Err)) *>
       assertIO(
         result.attempt.compile.toList,
@@ -29,11 +29,13 @@ class Ex3Errors extends CatsEffectSuite {
   }
 
   test("Use attempt: Mao eats, then Popcorn errors.") {
-    val result: Stream[IO, Either[Throwable, String]] = ???
+    val result: Stream[IO, Either[Throwable, String]] =
+      kittens.evalMap(eat).attempt
     assertIO(result.compile.toList, List(Right("Mao eats."), Left(Err)))
   }
   test("Use handleErrorWith to nap when Popcorn errors.") {
-    val result: Stream[IO, String] = ???
+    val result: Stream[IO, String] =
+      kittens.evalMap(eat).handleErrorWith(_ => kittens.evalMap(nap))
     assertIO(
       result.compile.toList,
       List("Mao eats.", "Mao naps.", "Popcorn naps.")
