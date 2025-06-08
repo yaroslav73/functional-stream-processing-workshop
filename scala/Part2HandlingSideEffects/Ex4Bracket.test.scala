@@ -4,6 +4,7 @@ import munit.*
 import fs2.*
 import cats.syntax.all.*
 import cats.data.Chain
+
 import scala.concurrent.duration.*
 
 class Ex4Bracket extends CatsEffectSuite {
@@ -13,7 +14,12 @@ class Ex4Bracket extends CatsEffectSuite {
 
   // Record the time taken to evaluate a stream.
   // Hint: Call cats.effect.Clock[IO].realTime to get the time
-  def timed[A](recorder: Recorder)(in: Stream[IO, A]): Stream[IO, A] = ???
+  def timed[A](recorder: Recorder)(in: Stream[IO, A]): Stream[IO, A] =
+    Stream
+      .bracket(Clock[IO].realTime) { start =>
+        Clock[IO].realTime.flatMap { end => recorder.record(end - start) }
+      }
+      .flatMap(_ => in)
 
   test("Time a stream") {
     val result = Recorder.run { recorder =>

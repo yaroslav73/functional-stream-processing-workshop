@@ -11,7 +11,7 @@ Stream
 Stream
   .bracket(IO.println("Acquiring").as(1))(n => IO.println(s"Releasing $n"))
   .flatMap { n =>
-    Stream.eval(IO.println(s"Using $n"))
+    Stream(n).repeat.take(3).evalTap(n => IO.println(s"Using $n"))
   }
   .compile
   .drain
