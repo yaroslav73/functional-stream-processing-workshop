@@ -7,6 +7,7 @@ import cats.effect.unsafe.implicits.global
 final case class Task(name: String, time: Int)
 
 val time = Stream.eval(Clock[IO].realTime)
+
 def printProcessed(startTime: FiniteDuration, task: Task): IO[Unit] =
   Clock[IO].realTime.flatMap(currentTime =>
     IO.println(
@@ -44,7 +45,6 @@ time
   .toList
   .unsafeRunSync()
 
-
 time
   .flatMap { startTime =>
     tasks
@@ -54,17 +54,15 @@ time
   .toList
   .unsafeRunSync()
 
-
 def processConstantTime(startTime: FiniteDuration)(task: Task): IO[Task] =
   printStarting(startTime, task).bracket[Task](_ =>
     IO.sleep(2.seconds).as(task)
   )(_ => printProcessed(startTime, task))
 
-
 time
   .flatMap { startTime =>
     tasks
-      .parEvalMap(3)(processConstantTime(startTime))
+      .parEvalMap(5)(processConstantTime(startTime))
   }
   .compile
   .toList

@@ -11,7 +11,12 @@ class Ex1Metrics extends CatsEffectSuite {
 
   import Ex1Metrics.*
 
-  def makeCounter: IO[CounterMetric] = ???
+  def makeCounter: IO[CounterMetric] = SignallingRef.of[IO, Int](0).map { ref =>
+    new CounterMetric {
+      def count[A]: Pipe[IO, A, A] = in => in.evalTap(_ => ref.update(_ + 1))
+      def counts: Stream[IO, Int] = ref.discrete
+    }
+  }
 
   test("counts number of elements in a stream") {
     val counts = makeCounter.flatMap { counter =>
@@ -31,7 +36,6 @@ class Ex1Metrics extends CatsEffectSuite {
 }
 
 object Ex1Metrics {
-
   trait CounterMetric {
     def count[A]: Pipe[IO, A, A]
     def counts: Stream[IO, Int]
