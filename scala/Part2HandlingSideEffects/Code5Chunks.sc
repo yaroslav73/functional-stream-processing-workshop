@@ -30,7 +30,7 @@ Stream(1, 2, 3)
   .drain
   .unsafeRunSync()
 
-Stream(1, 2, 3)
+Stream(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
   .evalTapChunk(IO.println)
   .debugChunks()
   .take(2)
