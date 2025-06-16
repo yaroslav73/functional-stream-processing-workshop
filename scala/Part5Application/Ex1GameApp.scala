@@ -1,8 +1,6 @@
 import cats.effect.*
 import fs2.*
-import fs2.concurrent.*
 import cats.syntax.all.*
-import doodle.core.Color
 import doodle.java2d.*
 import doodle.interact.syntax.all.*
 import doodle.interact.*
