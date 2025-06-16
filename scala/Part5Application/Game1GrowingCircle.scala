@@ -12,6 +12,7 @@ import doodle.core.*
 object Game1GrowingCircle extends GameApp[Int, Unit] {
   def game: IO[Game[Int, Unit]] = IO(new Game[Int, Unit] {
     def init: Int = 1
+
     def render(state: Int): Picture[Unit] =
       Picture.circle(state)
 
@@ -19,6 +20,7 @@ object Game1GrowingCircle extends GameApp[Int, Unit] {
 
     def action(command: Unit, state: Ref[IO, Int]): Stream[IO, Nothing] =
       Stream.empty
+
     def simulation(state: Ref[IO, Int]): Stream[IO, Nothing] =
       Stream
         .repeatEval(state.update(_ + 1))

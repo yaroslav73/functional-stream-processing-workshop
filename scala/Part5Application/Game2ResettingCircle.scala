@@ -13,6 +13,7 @@ object Example93 extends GameApp[Int, Unit] {
   def game: IO[Game[Int, Unit]] = IO(
     new Game[Int, Unit] {
       def init: Int = 1
+
       def render(state: Int): Picture[Unit] =
         Picture.circle(state)
 
@@ -23,6 +24,7 @@ object Example93 extends GameApp[Int, Unit] {
 
       def action(command: Unit, state: Ref[IO, Int]): Stream[IO, Nothing] =
         Stream.eval(state.set(1)).drain
+
       def simulation(state: Ref[IO, Int]): Stream[IO, Nothing] =
         Stream
           .repeatEval(state.update(_ + 1))
