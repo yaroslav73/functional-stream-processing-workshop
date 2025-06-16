@@ -4,6 +4,8 @@ import cats.effect.*
 import fs2.concurrent.*
 import cats.data.*
 import cats.effect.testkit.*
+import cats.implicits.catsSyntaxApplicativeId
+
 import java.util.concurrent.TimeoutException
 import scala.concurrent.duration.*
 
@@ -14,7 +16,15 @@ class Ex1Logger extends CatsEffectSuite {
   /** Use channels to construct a logger. Messages should be passed through the
     * `writeToDisk` pipe.
     */
-  def makeLogger(writeToDisk: Pipe[IO, String, Nothing]): IO[Logger] = ???
+  def makeLogger(writeToDisk: Pipe[IO, String, Nothing]): IO[Logger] =
+    Channel.synchronous[IO, String].map { channel =>
+      new Logger {
+        def log(message: String): IO[Unit] = channel.send(message).void
+
+        def writeInBackground[A]: Pipe[IO, A, A] =
+          in => in.concurrently(channel.stream.through(writeToDisk))
+      }
+    }
 
   test("Should log messages from different producers") {
     val messages = Recorder()
